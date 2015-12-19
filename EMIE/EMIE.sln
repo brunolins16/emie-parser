@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMIE.Parser.Library", "EMIE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMIE.Parser.UI.Win", "EMIE.Parser.UI.Win\EMIE.Parser.UI.Win.csproj", "{6B8DB80E-1065-42FB-8AAE-9C870ACBEF05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{F3A0072A-4F5F-48C6-A590-2E55501128B1}"
+	ProjectSection(SolutionItems) = preProject
+		Release\EMIE.Parser.Library.dll = Release\EMIE.Parser.Library.dll
+		Release\EMIE.Parser.UI.Win.exe = Release\EMIE.Parser.UI.Win.exe
+		Release\EMIE.Parser.UI.Win.exe.config = Release\EMIE.Parser.UI.Win.exe.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
