@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<IETelemetry>
+     <IECountInfo>
+          <CrashCount>[dword]</CrashCount>
+          <HangCount>[dword]</HangCount>
+          <NavigationFailureCount>[dword]</NavigationFailureCount>
+     </IECountInfo>
+     <IEURLInfo>
+          <URL>http://www.contoso.ocm</URL>
+          <ActiveXGUID>
+               <GUID>[guid]</GUID>
+          </ActiveXGUID>
+          <DocModeReason>[dword]</DocModeReason>
+          <DocMode>10</DocMode>
+          <NumberOfVisits>5</NumberOfVisits>
+          <BrowserStateReason>[dword]</BrowserStateReason>
+          <Zone>[dword]</Zone>
+          <CrashCount>[dword]</CrashCount>
+          <HangCount>[dword]</HangCount>
+          <NavigationFailureCount>[dword]</NavigationFailureCount>
+          <Domain>[string]</Domain>
+          <MostRecentNavigationFailure>[dword]</MostRecentNavigationFailure>
+     </IEURLInfo>
+</IETelemetry>

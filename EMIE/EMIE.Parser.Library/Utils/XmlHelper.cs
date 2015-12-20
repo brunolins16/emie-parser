@@ -21,5 +21,19 @@ namespace EMIE.Parser.Library.Utils
             //Salva o arquivo em disco
             siteList.Save(fileName);
         }
+
+        public static IEnumerable<Entities.Entry> ReadEnterpriseDiscoveryXml(string fileName)
+        {
+            var discoverListxml = XElement.Load(fileName);
+
+            return discoverListxml.Elements("IEURLInfo").Select(e => new Entities.Entry()
+            {
+                Url = new Uri(e.Element("URL").Value),
+                NumberOfVisits = Convert.ToInt32(e.Element("NumberOfVisits").Value),
+                DocMode = e.Element("DocMode").Value,
+                DocModeReason = e.Element("DocModeReason").Value,
+                BrowserStateReason = e.Element("BrowserStateReason").Value
+            });
+        }
     }
 }

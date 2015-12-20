@@ -10,8 +10,16 @@ using System.Windows.Forms;
 
 namespace EMIE.Parser.UI.Win.UserControls
 {
+    enum SourceType
+    {
+           CSV = 0,
+           XML = 1
+    }
+
     public partial class EMIEFileUploadControl : BaseUserControl
     {
+        private SourceType sourceType = SourceType.CSV;
+        
         public EMIEFileUploadControl()
         {
             InitializeComponent();
@@ -37,11 +45,21 @@ namespace EMIE.Parser.UI.Win.UserControls
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            var discoveryEntries = Library.Utils.CSVHelper.ReadEnterpriseDiscoveryCSV(txtFile.Text);
+            IEnumerable<Library.Entities.Entry> discoveryEntries = new List<Library.Entities.Entry>();
+
+            if (sourceType == SourceType.CSV)
+                discoveryEntries = Library.Utils.CSVHelper.ReadEnterpriseDiscoveryCSV(txtFile.Text);
+            else
+                discoveryEntries = Library.Utils.XmlHelper.ReadEnterpriseDiscoveryXml(txtFile.Text);
 
             var handler = Events[EVENT_LOAD] as NextEventHandler;
             if (handler != null)
                 handler(this, new NextEventArgs(discoveryEntries));
+        }
+
+        private void rdbType_CheckedChanged(object sender, EventArgs e)
+        {
+            sourceType = (SourceType)Convert.ToInt32((sender as Control).Tag);
         }
     }
 }
