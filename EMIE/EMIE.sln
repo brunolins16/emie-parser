@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{F3A0
 		Release\EMIE.Parser.Library.dll = Release\EMIE.Parser.Library.dll
 		Release\EMIE.Parser.UI.Win.exe = Release\EMIE.Parser.UI.Win.exe
 		Release\EMIE.Parser.UI.Win.exe.config = Release\EMIE.Parser.UI.Win.exe.config
+		Release\LINQtoCSV.dll = Release\LINQtoCSV.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMIE.Parser.Library.Tests", "EMIE.Parser.Library.Tests\EMIE.Parser.Library.Tests.csproj", "{1E8A5147-19A9-40C3-8B50-64273DEFC6FE}"
