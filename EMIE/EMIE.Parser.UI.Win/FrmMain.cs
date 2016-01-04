@@ -47,11 +47,15 @@ namespace EMIE.Parser.UI.Win
                 list.Single(entry => entry.Url.Equals(item.Url)).DocMode = item.DocMode;
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Xml files (*.xml)|*.xml";
+            saveFileDialog.Filter = "Site List v1 (Win7/8.1)|*.xml|Site List v2 (Win10)|*.xml";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Library.Utils.XmlHelper.MakeEMIESiteList(list, saveFileDialog.FileName);
+                if (saveFileDialog.FilterIndex == 1)
+                    Library.Utils.XmlHelper.MakeEMIESiteListV1(list, saveFileDialog.FileName);
+                else
+                    Library.Utils.XmlHelper.MakeEMIESiteList(list, saveFileDialog.FileName);
+
                 MessageBox.Show("Arquivo salvo com sucesso!", "Geraçào de arquivo Site List",MessageBoxButtons.OK);
                 StartOver();
             }

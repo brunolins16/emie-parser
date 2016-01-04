@@ -41,10 +41,6 @@
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // opdDiscoveryFile
-            // 
-            this.opdDiscoveryFile.FileName = "*.csv";
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label2);

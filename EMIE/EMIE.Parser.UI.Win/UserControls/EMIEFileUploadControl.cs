@@ -32,6 +32,8 @@ namespace EMIE.Parser.UI.Win.UserControls
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
+            opdDiscoveryFile.Filter = (sourceType == SourceType.CSV ? "CSV Report Exported|*.csv" : "XML Report Exported|*.xml");
+
             //Exibe a caixa de seleção
             if (opdDiscoveryFile.ShowDialog() == DialogResult.OK)
             {
