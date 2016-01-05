@@ -32,9 +32,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.domainListControl1 = new EMIE.Parser.UI.Win.UserControls.DomainListControl();
             this.emieFileUploadControl1 = new EMIE.Parser.UI.Win.UserControls.EMIEFileUploadControl();
             this.duplicateListControl1 = new EMIE.Parser.UI.Win.UserControls.DuplicateListControl();
-            this.domainListControl1 = new EMIE.Parser.UI.Win.UserControls.DomainListControl();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,16 @@
             this.panel3.Size = new System.Drawing.Size(996, 622);
             this.panel3.TabIndex = 5;
             // 
+            // domainListControl1
+            // 
+            this.domainListControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.domainListControl1.Location = new System.Drawing.Point(0, 0);
+            this.domainListControl1.Name = "domainListControl1";
+            this.domainListControl1.Size = new System.Drawing.Size(994, 620);
+            this.domainListControl1.TabIndex = 1;
+            this.domainListControl1.Visible = false;
+            this.domainListControl1.MoveNext += new EMIE.Parser.UI.Win.UserControls.BaseUserControl.NextEventHandler(this.domainListControl1_MoveNext);
+            // 
             // emieFileUploadControl1
             // 
             this.emieFileUploadControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -106,28 +116,18 @@
             this.duplicateListControl1.Visible = false;
             this.duplicateListControl1.MoveNext += new EMIE.Parser.UI.Win.UserControls.BaseUserControl.NextEventHandler(this.duplicateListControl1_MoveNext);
             // 
-            // domainListControl1
-            // 
-            this.domainListControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.domainListControl1.Location = new System.Drawing.Point(0, 0);
-            this.domainListControl1.Name = "domainListControl1";
-            this.domainListControl1.Size = new System.Drawing.Size(994, 620);
-            this.domainListControl1.TabIndex = 1;
-            this.domainListControl1.Visible = false;
-            this.domainListControl1.MoveNext += new EMIE.Parser.UI.Win.UserControls.BaseUserControl.NextEventHandler(this.domainListControl1_MoveNext);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(996, 730);
-            this.ControlBox = false;
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Enterprise Site Discovery - Exportador";
