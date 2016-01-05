@@ -47,8 +47,11 @@ namespace EMIE.Parser.UI.Win.UserControls
                 var entryGroup = row.DataBoundItem as IGrouping<Uri, Library.Entities.Entry>;
 
                 var comboBoxCell = row.Cells[0] as DataGridViewComboBoxCell;
-                comboBoxCell.DataSource = (from entry in entryGroup
-                                           select entry.DocMode).ToList();
+                var items = (from entry in entryGroup
+                             orderby int.Parse(entry.DocMode) ascending
+                             select entry.DocMode).ToList();
+                comboBoxCell.DataSource = items;
+                comboBoxCell.Value = items.First();
             }
         }
     }

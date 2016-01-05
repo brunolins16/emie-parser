@@ -12,7 +12,7 @@ namespace EMIE.Parser.Library.Utils
         public static void MakeEMIESiteList(IEnumerable<Entities.Entry> entries, string fileName)
         {
             var siteEntries = entries.Select(entry => new XElement("site",
-                                new XAttribute("url", new Uri(string.Format("{0}:{1}{2}", entry.Url.Host, entry.Url.Port, entry.Url.LocalPath.Split(';')[0]))),
+                                new XAttribute("url", string.Format("{0}:{1}{2}", entry.Url.Host, entry.Url.Port, entry.Url.LocalPath.Split(';')[0])),
                                 new XElement("compat-mode", string.Format("IE{0}", entry.DocMode)),
                                 new XElement("open-in", "IE11")));
 
@@ -38,23 +38,17 @@ namespace EMIE.Parser.Library.Utils
                 {
                     var children = item.Where(e => !string.IsNullOrEmpty(e.Url.LocalPath) && !e.Url.LocalPath.Equals("/")).Select(e => new XElement("path", e.Url.LocalPath.Split(';')[0], new XAttribute("docMode", e.DocMode)));
                     domain = item.Where(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")).Select(e => new XElement("domain",
-                                    new Uri(string.Format("{0}:{1}", e.Url.Host, e.Url.Port)),
+                                    string.Format("{0}:{1}", e.Url.Host, e.Url.Port),
                                     new XAttribute("docMode", e.DocMode), children)).SingleOrDefault();
                 }
                 else
                     domain  = item.Select(e => new XElement("domain", 
-                        new Uri(string.Format("{0}:{1}{2}", e.Url.Host, e.Url.Port, e.Url.LocalPath.Split(';')[0])), 
+                        string.Format("{0}:{1}{2}", e.Url.Host, e.Url.Port, e.Url.LocalPath.Split(';')[0]), 
                         new XAttribute("docMode", e.DocMode))).FirstOrDefault();
 
                 siteEntries.Add(domain);
                 
             }
-
-
-
-            //var siteEntries = entries.Select(entry => new XElement("domain",
-            //                    new Uri(string.Format("{0}:{1}{2}", entry.Url.Host, entry.Url.Port, entry.Url.LocalPath.Split(';')[0])),
-            //                    new XAttribute("docMode", entry.DocMode)));
 
             XElement siteList = new XElement("rules", new XAttribute("version", 0), new XElement("docMode", siteEntries));
 

@@ -22,8 +22,12 @@ namespace EMIE.Parser.UI.Win.UserControls
 
             dgwDomain.AutoGenerateColumns = false;
             dgwDomain.DataSource = (from entry in list
-                                   group entry by new Uri(string.Format("{0}://{1}:{2}", entry.Url.Scheme, entry.Url.Host, entry.Url.Port)) into domain
-                                   select new Library.Entities.Entry() { Selected = (domain.Key.Host.Contains("bradesco.com.br")), Url = domain.Key }).ToList();
+                                    group entry by new Uri(string.Format("{0}://{1}:{2}", entry.Url.Scheme, entry.Url.Host, entry.Url.Port)) into domain
+                                    select new Library.Entities.Entry()
+                                    {
+                                        Selected = (domain.Key.Host.Contains("bradesco.com.br") || (domain.Key.HostNameType == UriHostNameType.IPv4 && domain.Key.Host.StartsWith("10."))),
+                                        Url = domain.Key
+                                    }).ToList();
             dgwDomain.Refresh();
         }
 
@@ -38,6 +42,6 @@ namespace EMIE.Parser.UI.Win.UserControls
         }
 
         private void DomainListControl_Load(object sender, EventArgs e)
-        {}
+        { }
     }
 }
