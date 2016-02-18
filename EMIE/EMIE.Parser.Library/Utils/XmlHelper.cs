@@ -58,9 +58,12 @@ namespace EMIE.Parser.Library.Utils
 
         public static IEnumerable<Entities.Entry> ReadEnterpriseDiscoveryXml(string fileName)
         {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return null;
+
             var discoverListxml = XElement.Load(fileName);
 
-            return discoverListxml.Elements("IEURLInfo").Select(e => new Entities.Entry()
+            return discoverListxml.Elements("IEURLInfo").Where(e => e.Elements("DocMode").Any()).Select(e => new Entities.Entry()
             {
                 Url = new Uri(e.Element("URL").Value),
                 NumberOfVisits = Convert.ToInt32(e.Element("NumberOfVisits").Value),

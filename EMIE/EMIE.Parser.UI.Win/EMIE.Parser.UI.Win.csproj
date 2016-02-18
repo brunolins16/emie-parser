@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>EMIE.Parser.UI.Win.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+    <CodeAnalysisRuleSet>EMIE.Parser.UI.Win.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -73,6 +76,12 @@
     <Compile Include="UserControls\EMIEFileUploadControl.Designer.cs">
       <DependentUpon>EMIEFileUploadControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\FileUploadItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\FileUploadItem.Designer.cs">
+      <DependentUpon>FileUploadItem.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -95,6 +104,10 @@
     <EmbeddedResource Include="UserControls\EMIEFileUploadControl.resx">
       <DependentUpon>EMIEFileUploadControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\FileUploadItem.resx">
+      <DependentUpon>FileUploadItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="EMIE.Parser.UI.Win.ruleset" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

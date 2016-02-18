@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Concurrent;
 
 namespace EMIE.Parser.UI.Win.UserControls
 {
-    enum SourceType
+    public enum SourceType
     {
-           CSV = 0,
-           XML = 1
+           CSV = 1,
+           XML = 2
     }
 
     public partial class EMIEFileUploadControl : BaseUserControl
@@ -27,32 +28,39 @@ namespace EMIE.Parser.UI.Win.UserControls
 
         public void Clear()
         {
-            txtFile.Text = string.Empty;
+            pnlFileList.Controls.Clear();
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            opdDiscoveryFile.Filter = (sourceType == SourceType.CSV ? "CSV Report Exported|*.csv" : "XML Report Exported|*.xml");
+            opdDiscoveryFile.Filter = "CSV Report Exported|*.csv|XML Report Exported|*.xml";
 
             //Exibe a caixa de seleção
             if (opdDiscoveryFile.ShowDialog() == DialogResult.OK)
             {
-                var selectedFile = opdDiscoveryFile.FileName;
-                txtFile.Text = selectedFile;                                 
+                foreach (var selectedFile in opdDiscoveryFile.FileNames)
+                    pnlFileList.Controls.Add(new FileUploadItem(selectedFile, (SourceType)opdDiscoveryFile.FilterIndex));
+                
             }
         }
 
         private void EMIEFileUploadControl_Load(object sender, EventArgs e)
-        { }
+        {}
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            IEnumerable<Library.Entities.Entry> discoveryEntries = new List<Library.Entities.Entry>();
+            var discoveryEntries = new ConcurrentBag<Library.Entities.Entry>();
+            Parallel.ForEach(pnlFileList.Controls.Cast<FileUploadItem>(), item => {
+                IEnumerable<Library.Entities.Entry> entries;
 
-            if (sourceType == SourceType.CSV)
-                discoveryEntries = Library.Utils.CSVHelper.ReadEnterpriseDiscoveryCSV(txtFile.Text);
-            else
-                discoveryEntries = Library.Utils.XmlHelper.ReadEnterpriseDiscoveryXml(txtFile.Text);
+                if (item.SourceType == SourceType.CSV)
+                    entries = Library.Utils.CSVHelper.ReadEnterpriseDiscoveryCSV(item.FileName);
+                else
+                    entries = Library.Utils.XmlHelper.ReadEnterpriseDiscoveryXml(item.FileName);
+
+                foreach (var entry in entries)
+                    discoveryEntries.Add(entry);
+            });           
 
             var handler = Events[EVENT_LOAD] as NextEventHandler;
             if (handler != null)

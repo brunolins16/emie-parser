@@ -38,6 +38,10 @@ namespace EMIE.Parser.UI.Win.UserControls
             var handler = Events[EVENT_LOAD] as NextEventHandler;
             if (handler != null)
                 handler(this, new NextEventArgs(selectedRows));
+
+
+            dgwDomain.DataSource = null;
+            dgwDomain.Refresh();
         }
 
         private void dgwDomain_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

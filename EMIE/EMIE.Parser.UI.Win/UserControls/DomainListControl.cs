@@ -39,6 +39,9 @@ namespace EMIE.Parser.UI.Win.UserControls
             var handler = Events[EVENT_LOAD] as NextEventHandler;
             if (handler != null)
                 handler(this, new NextEventArgs(selectedRows));
+
+            dgwDomain.DataSource = null;
+            dgwDomain.Refresh();
         }
 
         private void DomainListControl_Load(object sender, EventArgs e)

@@ -93,7 +93,6 @@ namespace EMIE.Parser.UI.Win
                         entryList.Add(item);
                 }
             });
-
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Site List v1 (Win7/8.1)|*.xml|Site List v2 (Win10)|*.xml";
 
@@ -106,6 +105,7 @@ namespace EMIE.Parser.UI.Win
 
                 MessageBox.Show("Arquivo salvo com sucesso!", "Geraçào de arquivo Site List",MessageBoxButtons.OK);
                 StartOver();
+                entryList = null;
             }
         }
 
@@ -114,6 +114,7 @@ namespace EMIE.Parser.UI.Win
             emieFileUploadControl1.Visible = true;
             emieFileUploadControl1.Clear();
             duplicateListControl1.Visible = false;
+            list = null;
         }
 
         private IEnumerable<Library.Entities.Entry> PreprocessList(IEnumerable<Library.Entities.Entry> entries)

@@ -32,14 +32,19 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.btnNext = new System.Windows.Forms.Button();
-            this.txtFile = new System.Windows.Forms.TextBox();
             this.btnUpload = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.rdbCSV = new System.Windows.Forms.RadioButton();
             this.rdbXML = new System.Windows.Forms.RadioButton();
+            this.pnlFileList = new System.Windows.Forms.FlowLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // opdDiscoveryFile
+            // 
+            this.opdDiscoveryFile.Multiselect = true;
             // 
             // panel1
             // 
@@ -64,7 +69,7 @@
             // btnNext
             // 
             this.btnNext.Font = new System.Drawing.Font("Segoe UI Emoji", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Location = new System.Drawing.Point(832, 174);
+            this.btnNext.Location = new System.Drawing.Point(832, 517);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(133, 39);
             this.btnNext.TabIndex = 3;
@@ -72,20 +77,12 @@
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
-            // txtFile
-            // 
-            this.txtFile.Font = new System.Drawing.Font("Segoe UI Emoji", 10F);
-            this.txtFile.Location = new System.Drawing.Point(26, 134);
-            this.txtFile.Name = "txtFile";
-            this.txtFile.Size = new System.Drawing.Size(860, 30);
-            this.txtFile.TabIndex = 2;
-            // 
             // btnUpload
             // 
             this.btnUpload.Font = new System.Drawing.Font("Segoe UI Emoji", 10F);
-            this.btnUpload.Location = new System.Drawing.Point(892, 128);
+            this.btnUpload.Location = new System.Drawing.Point(191, 91);
             this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(73, 40);
+            this.btnUpload.Size = new System.Drawing.Size(73, 32);
             this.btnUpload.TabIndex = 1;
             this.btnUpload.Text = "...";
             this.btnUpload.UseVisualStyleBackColor = true;
@@ -137,20 +134,41 @@
             this.rdbXML.UseVisualStyleBackColor = true;
             this.rdbXML.CheckedChanged += new System.EventHandler(this.rdbType_CheckedChanged);
             // 
+            // pnlFileList
+            // 
+            this.pnlFileList.AutoScroll = true;
+            this.pnlFileList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.pnlFileList.Location = new System.Drawing.Point(26, 160);
+            this.pnlFileList.Name = "pnlFileList";
+            this.pnlFileList.Size = new System.Drawing.Size(939, 353);
+            this.pnlFileList.TabIndex = 9;
+            this.pnlFileList.WrapContents = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Emoji", 10F);
+            this.label4.Location = new System.Drawing.Point(22, 130);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(182, 23);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Arquivos selecionados:";
+            // 
             // EMIEFileUploadControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.pnlFileList);
             this.Controls.Add(this.rdbXML);
             this.Controls.Add(this.rdbCSV);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnNext);
-            this.Controls.Add(this.txtFile);
             this.Controls.Add(this.btnUpload);
             this.Controls.Add(this.label1);
             this.Name = "EMIEFileUploadControl";
-            this.Size = new System.Drawing.Size(990, 297);
+            this.Size = new System.Drawing.Size(990, 559);
             this.Load += new System.EventHandler(this.EMIEFileUploadControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -164,12 +182,13 @@
         private System.Windows.Forms.OpenFileDialog opdDiscoveryFile;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnUpload;
-        private System.Windows.Forms.TextBox txtFile;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RadioButton rdbCSV;
         private System.Windows.Forms.RadioButton rdbXML;
+        private System.Windows.Forms.FlowLayoutPanel pnlFileList;
+        private System.Windows.Forms.Label label4;
     }
 }
