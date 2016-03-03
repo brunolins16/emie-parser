@@ -42,13 +42,18 @@
     <Domain>[string]</Domain>
     <MostRecentNavigationFailure>[dword]</MostRecentNavigationFailure>
   </IEURLInfo>
+  <IECountInfo>
+    <CrashCount>[dword]</CrashCount>
+    <HangCount>[dword]</HangCount>
+    <NavigationFailureCount>[dword]</NavigationFailureCount>
+  </IECountInfo>
   <IEURLInfo>
     <URL>http://www.contoso2.ocm</URL>
     <ActiveXGUID>
       <GUID>[guid]</GUID>
     </ActiveXGUID>
     <DocModeReason>[dword]</DocModeReason>
-    <DocMode>9</DocMode>
+    <DocMode>10</DocMode>
     <NumberOfVisits>5</NumberOfVisits>
     <BrowserStateReason>[dword]</BrowserStateReason>
     <Zone>[dword]</Zone>

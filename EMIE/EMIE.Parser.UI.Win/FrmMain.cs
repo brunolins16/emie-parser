@@ -13,164 +13,70 @@ namespace EMIE.Parser.UI.Win
 {
     public partial class FrmMain : Form
     {
-        IEnumerable<Library.Entities.Entry> list;
-
         public FrmMain()
         {
             InitializeComponent();
         }
 
-        private void emieFileUploadControl1_MoveNext(object sender, UserControls.NextEventArgs e)
+        private void FrmMain_Load(object sender, EventArgs e)
         {
-            emieFileUploadControl1.Visible = false;
-
-            list = e.Entries;
-
-            domainListControl1.Fill(list);
-            domainListControl1.Visible = true;
+            CreateContent(Utils.Steps.FileUpload);
         }
 
-        private void domainListControl1_MoveNext(object sender, UserControls.NextEventArgs e)
+        public void CreateContent(Utils.Steps step)
         {
-
-            domainListControl1.Visible = false;
-
-            //Prepara a lista
-            var duplicateList = PreprocessList(e.Entries);
-
-            duplicateListControl1.Fill(duplicateList);
-            duplicateListControl1.Visible = true;
-        }
-
-        private void duplicateListControl1_MoveNext(object sender, UserControls.NextEventArgs e)
-        {
-            foreach (var item in e.Entries)
-                list.Single(entry => entry.Url.Equals(item.Url)).DocMode = item.DocMode;
-
-
-            var domains = from entry in list
-                          group entry by new { entry.Url.Host, entry.Url.Port } into domain
-                          select domain;
-
-            var entryList = new ConcurrentBag<Library.Entities.Entry>();
-            Parallel.ForEach(domains, d =>
+            if (pnlContent.Controls.Count > 0)
             {
-                var paths = (from entry in d
-                             group entry by new
-                             {
-                                 Host = entry.Url.Host,
-                                 Port = entry.Url.Port,
-                                 Scheme = entry.Url.Scheme,
-                                 Path = entry.Url.LocalPath.Split(';')[0],
-                                 DocMode = entry.DocMode
-                             } into path
-                             select new Library.Entities.Entry()
-                             {
-                                 Url = new Uri(string.Format("{0}://{1}:{2}{3}", path.Key.Scheme, path.Key.Host, path.Key.Port, path.Key.Path)),
-                                 DocMode = path.Key.DocMode,
-                                 NumberOfVisits = path.Sum(p => p.NumberOfVisits)
-                             });
+                var currentControl = pnlContent.Controls[0] as UserControls.BaseUserControl;
 
-                var docModeQty = paths.Distinct(new Library.Entities.Comparer.DocModeComparer()).Count();
+                if (currentControl != null)
+                    currentControl.Dispose();
 
-                if (docModeQty == 1)
-                {
-                    var root = new Library.Entities.Entry();
+                //Remove todos os controles de conteudo
+                pnlContent.Controls.Clear();
+            }
 
-                    if (paths.Any(p => string.IsNullOrEmpty(p.Url.LocalPath) || p.Url.LocalPath.Equals("/")))
-                        root = paths.FirstOrDefault(en => string.IsNullOrEmpty(en.Url.LocalPath) || en.Url.LocalPath.Equals("/"));
-                    else
-                    {
-                        root = paths.First();
-                        root.Url = new Uri(string.Format("{0}://{1}:{2}",root.Url.Scheme, root.Url.Host, root.Url.Port));
-                    }                      
-                    
-                    entryList.Add(root);
-                }
-                else
-                {
-                    foreach (var item in paths.Distinct(new Library.Entities.Comparer.PathComparer()))
-                        entryList.Add(item);
-                }
-            });
+            //Cria um istancia do controle
+            var userControl = Utils.UserControlFactory.Instantiate(step);
+            userControl.MoveNext += UserControl_MoveNext;
+
+            //Adiciona o controle na tela
+            pnlContent.Controls.Add(userControl);
+        }
+
+        private void UserControl_MoveNext(object sender, UserControls.NextEventArgs e)
+        {
+            if (e.Step != Utils.Steps.Download)
+                //Cria o novo controle
+                CreateContent(e.Step);
+            else
+                ExportFile();
+        }
+
+        private void ExportFile()
+        {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Site List v1 (Win7/8.1)|*.xml|Site List v2 (Win10)|*.xml";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
+                //Obtém a lista de sites para exportação
+                var library = new Library.Business.SiteDiscovery();
+                var entriesToExport = library.Sanitize(Utils.AppState.SiteEntries, Utils.AppState.Domains, Utils.AppState.ItemsToRemove);
+
                 if (saveFileDialog.FilterIndex == 1)
-                    Library.Utils.XmlHelper.MakeEMIESiteListV1(entryList, saveFileDialog.FileName);
+                    Library.Utils.XmlHelper.MakeEMIESiteListV1(entriesToExport, saveFileDialog.FileName);
                 else
-                    Library.Utils.XmlHelper.MakeEMIESiteList(entryList, saveFileDialog.FileName);
+                    Library.Utils.XmlHelper.MakeEMIESiteList(entriesToExport, saveFileDialog.FileName);
 
-                MessageBox.Show("Arquivo salvo com sucesso!", "Geraçào de arquivo Site List",MessageBoxButtons.OK);
-                StartOver();
-                entryList = null;
+                //Limpas as váriaveis
+                Utils.AppState.Clear();           
+
+                //Apresenta o controle inicial
+                CreateContent(Utils.Steps.FileUpload);
+
+                MessageBox.Show("Arquivo salvo com sucesso!", "Geraçào de arquivo Site List", MessageBoxButtons.OK);
             }
-        }
-
-        private void StartOver()
-        {
-            emieFileUploadControl1.Visible = true;
-            emieFileUploadControl1.Clear();
-            duplicateListControl1.Visible = false;
-            list = null;
-        }
-
-        private IEnumerable<Library.Entities.Entry> PreprocessList(IEnumerable<Library.Entities.Entry> entries)
-        {
-            var domains = from entry in (from ent in list
-                                         join domain in entries
-                                             on new Uri(string.Format("{0}://{1}:{2}", ent.Url.Scheme, ent.Url.Host, ent.Url.Port)) equals domain.Url
-                                         select ent)
-                          group entry by new { entry.Url.Host, entry.Url.Port } into domain
-                          select domain;
-
-            var entryList = new ConcurrentBag<Library.Entities.Entry>();
-            var duplicateList = new ConcurrentBag<Library.Entities.Entry>();
-            Parallel.ForEach(domains, d =>
-            {
-                var paths = (from entry in d
-                             group entry by new
-                             {
-                                 Host = entry.Url.Host,
-                                 Port = entry.Url.Port,
-                                 Scheme = entry.Url.Scheme,
-                                 Path = entry.Url.LocalPath.Split(';')[0],
-                                 DocMode = entry.DocMode
-                             } into path
-                             select new Library.Entities.Entry()
-                             {
-                                 Url = new Uri(string.Format("{0}://{1}:{2}{3}", path.Key.Scheme, path.Key.Host, path.Key.Port, path.Key.Path)),
-                                 DocMode = path.Key.DocMode,
-                                 NumberOfVisits = path.Sum(p => p.NumberOfVisits)
-                             });
-
-                var docModeQty = paths.Distinct(new Library.Entities.Comparer.DocModeComparer()).Count();
-
-                if (docModeQty == 1)
-                    entryList.Add(paths.First());
-                else
-                {
-                    var duplicates = (from path in paths.Distinct(new Library.Entities.Comparer.DocModePathComparer())
-                                     group path by path.Url into duplicated
-                                     where duplicated.Count() > 1
-                                     select duplicated).SelectMany(g => g);
-
-                    foreach (var item in duplicates)
-                        duplicateList.Add(item);
-
-                    foreach (var item in paths.Distinct(new Library.Entities.Comparer.PathComparer()))
-                        entryList.Add(item);
-                }
-            });
-
-            list = entryList.ToList();
-            return duplicateList;
-        }
-
-        private void emieFileUploadControl1_Load(object sender, EventArgs e)
-        {
 
         }
     }

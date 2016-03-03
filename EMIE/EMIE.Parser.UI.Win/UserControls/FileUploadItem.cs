@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EMIE.Parser.Library.Entities;
 
 namespace EMIE.Parser.UI.Win.UserControls
 {
     public partial class FileUploadItem : UserControl
     {
-        public SourceType SourceType { get; private set; }
+        public EntryFileType SourceType { get; private set; }
         public string FileName { get { return lblName.Text; } }
 
         public FileUploadItem()
@@ -20,7 +21,7 @@ namespace EMIE.Parser.UI.Win.UserControls
             InitializeComponent();
         }
 
-        public FileUploadItem(string fileName, SourceType sourceType) : this()
+        public FileUploadItem(string fileName, EntryFileType sourceType) : this()
         {
             lblName.Text = fileName;
             this.SourceType = sourceType;

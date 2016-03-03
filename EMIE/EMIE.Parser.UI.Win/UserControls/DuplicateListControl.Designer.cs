@@ -105,6 +105,7 @@
             this.Controls.Add(this.dgwDomain);
             this.Name = "DuplicateListControl";
             this.Size = new System.Drawing.Size(990, 559);
+            this.Load += new System.EventHandler(this.DuplicateListControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDomain)).EndInit();

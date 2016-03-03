@@ -17,9 +17,10 @@ namespace EMIE.Parser.UI.Win.UserControls
             InitializeComponent();
         }
 
-        public void Fill(IEnumerable<Library.Entities.Entry> list)
+        public void Fill(Library.Entities.Entry[] list)
         {
-            dgwDomain.DataSource = (from entry in list
+            var library = new Library.Business.SiteDiscovery();
+            dgwDomain.DataSource = (from entry in library.Sanitize(list.ToArray(), Utils.AppState.Domains)
                                     group entry by entry.Url into pathGroup
                                     select pathGroup).ToList();
             dgwDomain.Refresh();
@@ -27,18 +28,12 @@ namespace EMIE.Parser.UI.Win.UserControls
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            var selectedRows = (from r in dgwDomain.Rows.Cast<DataGridViewRow>()
-                                select
-                                new Library.Entities.Entry()
-                                {
-                                    Url = (r.DataBoundItem as IGrouping<Uri, Library.Entities.Entry>).First().Url,
-                                    DocMode = r.Cells[0].Value.ToString()
-                                });
+            var selectedItems = dgwDomain.Rows.Cast<DataGridViewRow>().Select(r => string.Format("{0}-{1}", r.Cells[0].Value.ToString(), (r.DataBoundItem as IGrouping<Uri, Library.Entities.Entry>).First().Url.ToString()));
+            Utils.AppState.ItemsToRemove = Utils.AppState.ItemsToRemove.Where(entry => !selectedItems.Contains(string.Format("{0}-{1}", entry.DocMode, entry.Url.ToString()))).ToArray();
 
             var handler = Events[EVENT_LOAD] as NextEventHandler;
             if (handler != null)
-                handler(this, new NextEventArgs(selectedRows));
-
+                handler(this, new NextEventArgs(Utils.Steps.Download));
 
             dgwDomain.DataSource = null;
             dgwDomain.Refresh();
@@ -57,6 +52,11 @@ namespace EMIE.Parser.UI.Win.UserControls
                 comboBoxCell.DataSource = items;
                 comboBoxCell.Value = items.First();
             }
+        }
+
+        private void DuplicateListControl_Load(object sender, EventArgs e)
+        {
+            Fill(Utils.AppState.ItemsToRemove);
         }
     }
 }

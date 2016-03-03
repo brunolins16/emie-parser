@@ -9,12 +9,12 @@ namespace EMIE.Parser.UI.Win.UserControls
 {
     public class NextEventArgs : EventArgs {
 
-        public NextEventArgs(IEnumerable<Library.Entities.Entry>  entries)
+        public NextEventArgs(Utils.Steps nextStep)
         {
-            this.Entries = entries;
+            this.Step = nextStep;
         }
 
-        public IEnumerable<Library.Entities.Entry> Entries { get; set; }
+        public Utils.Steps Step { get; set; }
     }
 
     public class BaseUserControl : UserControl

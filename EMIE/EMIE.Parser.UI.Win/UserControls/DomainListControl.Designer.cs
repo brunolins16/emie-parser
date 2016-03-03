@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.dgwDomain = new System.Windows.Forms.DataGridView();
-            this.Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Url = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnNext = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
+            this.Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Url = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDomain)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -52,20 +52,6 @@
             this.dgwDomain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgwDomain.Size = new System.Drawing.Size(966, 457);
             this.dgwDomain.TabIndex = 0;
-            // 
-            // Selected
-            // 
-            this.Selected.DataPropertyName = "Selected";
-            this.Selected.HeaderText = "";
-            this.Selected.Name = "Selected";
-            this.Selected.Width = 50;
-            // 
-            // Url
-            // 
-            this.Url.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Url.DataPropertyName = "Url";
-            this.Url.HeaderText = "Url";
-            this.Url.Name = "Url";
             // 
             // btnNext
             // 
@@ -97,6 +83,20 @@
             this.label2.Size = new System.Drawing.Size(290, 28);
             this.label2.TabIndex = 4;
             this.label2.Text = "Passo 2 -> Seleção de domínios";
+            // 
+            // Selected
+            // 
+            this.Selected.DataPropertyName = "isLocal";
+            this.Selected.HeaderText = "";
+            this.Selected.Name = "Selected";
+            this.Selected.Width = 50;
+            // 
+            // Url
+            // 
+            this.Url.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Url.DataPropertyName = "Name";
+            this.Url.HeaderText = "Url";
+            this.Url.Name = "Url";
             // 
             // DomainListControl
             // 
