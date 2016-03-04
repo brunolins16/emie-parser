@@ -93,6 +93,7 @@ namespace EMIE.Parser.Library.Business
 
         private IEnumerable<Entities.Entry> LoadFiles(Entities.EntryFileInfo[] siteDiscoveryFiles)
         {
+            var fileTypes = new string[] { ".xls", ".xlsx", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".csv", ".jpg", ".png", ".bmp", ".tif", ".gif", ".xsl", ".wsdl", ".xml" };
             var discoveryEntries = new ConcurrentBag<Entities.Entry>();
             //Carrega todos os arquivos
             Parallel.ForEach(siteDiscoveryFiles, item =>
@@ -108,7 +109,7 @@ namespace EMIE.Parser.Library.Business
                     discoveryEntries.Add(entry);
             });
 
-            return discoveryEntries.AsEnumerable();
+            return discoveryEntries.AsEnumerable().Where(e => !fileTypes.Contains(System.IO.Path.GetExtension(e.Url.LocalPath)));
         }
     }
 }

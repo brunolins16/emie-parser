@@ -63,14 +63,19 @@ namespace EMIE.Parser.Library.Utils
 
             var discoverListxml = XElement.Load(fileName);
 
-            return discoverListxml.Elements("IEURLInfo").Where(e => e.Elements("DocMode").Any()).Select(e => new Entities.Entry()
-            {
-                Url = new Uri(e.Element("URL").Value),
-                NumberOfVisits = Convert.ToInt32(e.Element("NumberOfVisits").Value),
-                DocMode = e.Element("DocMode").Value,
-                DocModeReason = e.Element("DocModeReason").Value,
-                BrowserStateReason = e.Element("BrowserStateReason").Value
-            });
+            return discoverListxml.Elements("IEURLInfo").Where(e => e.Elements("DocMode").Any()).Select(e => {
+                Uri url = null;
+                Uri.TryCreate(e.Element("URL").Value, UriKind.RelativeOrAbsolute, out url);
+
+                return new Entities.Entry()
+                {
+                    Url = url,
+                    NumberOfVisits = Convert.ToInt32(e.Element("NumberOfVisits").Value),
+                    DocMode = e.Element("DocMode").Value,
+                    DocModeReason = e.Element("DocModeReason").Value,
+                    BrowserStateReason = e.Element("BrowserStateReason").Value
+                };
+            }).Where(e => e.Url != null);
         }
     }
 }
