@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,12 +43,12 @@ namespace EMIE.Parser.Library.Utils
                                     new XAttribute("docMode", e.DocMode), children)).SingleOrDefault();
                 }
                 else
-                    domain  = item.Select(e => new XElement("domain", 
-                        string.Format("{0}:{1}{2}", e.Url.Host, e.Url.Port, e.Url.LocalPath.Split(';')[0]), 
-                        new XAttribute("docMode", e.DocMode))).FirstOrDefault();
+                    domain = item.Select(e => new XElement("domain",
+                       string.Format("{0}:{1}{2}", e.Url.Host, e.Url.Port, e.Url.LocalPath.Split(';')[0]),
+                       new XAttribute("docMode", e.DocMode))).FirstOrDefault();
 
                 siteEntries.Add(domain);
-                
+
             }
 
             XElement siteList = new XElement("rules", new XAttribute("version", 0), new XElement("docMode", siteEntries));
@@ -61,9 +62,13 @@ namespace EMIE.Parser.Library.Utils
             if (string.IsNullOrWhiteSpace(fileName))
                 return null;
 
+            //Prepara o xml
+            PrepareXMLFile(fileName);
+
             var discoverListxml = XElement.Load(fileName);
 
-            return discoverListxml.Elements("IEURLInfo").Where(e => e.Elements("DocMode").Any()).Select(e => {
+            return discoverListxml.Elements("IEURLInfo").Where(e => e.Elements("DocMode").Any()).Select(e =>
+            {
                 Uri url = null;
                 Uri.TryCreate(e.Element("URL").Value, UriKind.RelativeOrAbsolute, out url);
 
@@ -76,6 +81,12 @@ namespace EMIE.Parser.Library.Utils
                     BrowserStateReason = e.Element("BrowserStateReason").Value
                 };
             }).Where(e => e.Url != null);
+        }
+
+        private static void PrepareXMLFile(string fileName)
+        {
+            var lines = File.ReadAllLines(fileName);
+            File.WriteAllText(fileName, string.Join(string.Empty, lines));
         }
     }
 }

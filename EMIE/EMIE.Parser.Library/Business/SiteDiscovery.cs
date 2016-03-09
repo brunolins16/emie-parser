@@ -64,11 +64,16 @@ namespace EMIE.Parser.Library.Business
                            select entry).ToArray();
             }
 
-            if (itensToRemove != null) {
+            if (itensToRemove != null)
+            {
                 //Filtra os itens removidos
-                var removeList = itensToRemove.Select(e => string.Format("{0}-{1}", e.DocMode,e.Url.ToString()));
+                var removeList = itensToRemove.Select(e => string.Format("{0}-{1}", e.DocMode, e.Url.ToString()));
                 entries = entries.Where(e => !removeList.Contains(string.Format("{0}-{1}", e.DocMode, e.Url.ToString()))).ToArray();
             }
+
+
+            //Seleciona distintamente pelo host e modo de documento
+            entries = entries.OrderBy(e => e.Url, new Entities.Comparer.UrlComparer()).Distinct(new Entities.Comparer.DocModeHostComparer()).ToArray();
 
             return entries;
         }

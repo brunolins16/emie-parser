@@ -12,7 +12,7 @@ using System.Collections.Concurrent;
 namespace EMIE.Parser.UI.Win.UserControls
 {
     public partial class EMIEFileUploadControl : BaseUserControl
-    {        
+    {
         public EMIEFileUploadControl()
         {
             InitializeComponent();
@@ -31,14 +31,24 @@ namespace EMIE.Parser.UI.Win.UserControls
             if (opdDiscoveryFile.ShowDialog() == DialogResult.OK)
             {
                 foreach (var selectedFile in opdDiscoveryFile.FileNames)
-                    pnlFileList.Controls.Add(new FileUploadItem(selectedFile, (Library.Entities.EntryFileType)opdDiscoveryFile.FilterIndex));
-                
+                {
+                    var item = new FileUploadItem(selectedFile, (Library.Entities.EntryFileType)opdDiscoveryFile.FilterIndex);
+                    item.Width = pnlFileList.Width - 40;
+                    item.ItemRemoved += Item_ItemRemoved;
+                    pnlFileList.Controls.Add(item);
+                }
             }
+        }
+
+        private void Item_ItemRemoved(object sender, EventArgs e)
+        {
+            pnlFileList.Controls.Remove(sender as Control);
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            var files = pnlFileList.Controls.Cast<FileUploadItem>().Select(item => (new Library.Entities.EntryFileInfo() {
+            var files = pnlFileList.Controls.Cast<FileUploadItem>().Select(item => (new Library.Entities.EntryFileInfo()
+            {
                 FileName = item.FileName,
                 Type = item.SourceType
             })).ToArray();

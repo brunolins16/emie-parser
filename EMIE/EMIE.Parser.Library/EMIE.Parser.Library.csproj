@@ -47,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\SiteDiscovery.cs" />
+    <Compile Include="Entities\Comparer\DocModeHostComparer.cs" />
     <Compile Include="Entities\Comparer\PathComparer.cs" />
     <Compile Include="Entities\Comparer\DocModePathComparer.cs" />
     <Compile Include="Entities\Comparer\DocModeComparer.cs" />
+    <Compile Include="Entities\Comparer\UrlComparer.cs" />
     <Compile Include="Entities\Entry.cs" />
     <Compile Include="Entities\EntryDomain.cs" />
     <Compile Include="Entities\EntryFileInfo.cs" />

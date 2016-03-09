@@ -13,6 +13,21 @@ namespace EMIE.Parser.UI.Win.UserControls
 {
     public partial class FileUploadItem : UserControl
     {
+        public delegate void ItemRemovedEventHandler(object sender, EventArgs e);
+        protected static readonly object EVENT_LOAD = new object();
+
+        public event ItemRemovedEventHandler ItemRemoved
+        {
+            add
+            {
+                Events.AddHandler(EVENT_LOAD, value);
+            }
+            remove
+            {
+                Events.RemoveHandler(EVENT_LOAD, value);
+            }
+        }
+
         public EntryFileType SourceType { get; private set; }
         public string FileName { get { return lblName.Text; } }
 
@@ -29,7 +44,9 @@ namespace EMIE.Parser.UI.Win.UserControls
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-
+            var handler = Events[EVENT_LOAD] as ItemRemovedEventHandler;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
     }
 }
