@@ -33,19 +33,33 @@ namespace EMIE.Parser.Library.Utils
 
             foreach (var item in group)
             {
-                XElement domain = null;
+                var root = item.Where(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")).SingleOrDefault();
+                var hostExcluded = !item.Any(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")); 
 
-                if (item.Any(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")))
-                {
-                    var children = item.Where(e => !string.IsNullOrEmpty(e.Url.LocalPath) && !e.Url.LocalPath.Equals("/")).Select(e => new XElement("path", e.Url.LocalPath.Split(';')[0], new XAttribute("docMode", e.DocMode)));
-                    domain = item.Where(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")).Select(e => new XElement("domain",
-                                    string.Format("{0}:{1}", e.Url.Host, e.Url.Port),
-                                    new XAttribute("docMode", e.DocMode), children)).SingleOrDefault();
-                }
-                else
-                    domain = item.Select(e => new XElement("domain",
-                       string.Format("{0}:{1}{2}", e.Url.Host, e.Url.Port, e.Url.LocalPath.Split(';')[0]),
-                       new XAttribute("docMode", e.DocMode))).FirstOrDefault();
+                var children = item
+                    .Where(e => !string.IsNullOrEmpty(e.Url.LocalPath) && !e.Url.LocalPath.Equals("/"))
+                    .Select(e => new XElement("path", e.Url.LocalPath.Split(';')[0], new XAttribute("docMode", e.DocMode)));
+
+
+                XElement domain = new XElement("domain",
+                                                string.Format("{0}:{1}", item.Key.Host, item.Key.Port),
+                                                new XAttribute("exclude", hostExcluded),
+                                                new XAttribute("docMode", (root != null ? root.DocMode : "edge")),
+                                                children);
+
+
+                //Bug on subdmonain itens
+                //if (item.Any(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")))
+                //{
+                //    var children = item.Where(e => !string.IsNullOrEmpty(e.Url.LocalPath) && !e.Url.LocalPath.Equals("/")).Select(e => new XElement("path", e.Url.LocalPath.Split(';')[0], new XAttribute("docMode", e.DocMode)));
+                //    domain = item.Where(e => string.IsNullOrEmpty(e.Url.LocalPath) || e.Url.LocalPath.Equals("/")).Select(e => new XElement("domain",
+                //                    string.Format("{0}:{1}", e.Url.Host, e.Url.Port),
+                //                    new XAttribute("docMode", e.DocMode), children)).SingleOrDefault();
+                //}
+                //else
+                //    domain = item.Select(e => new XElement("domain",
+                //       string.Format("{0}:{1}{2}", e.Url.Host, e.Url.Port, e.Url.LocalPath.Split(';')[0]),
+                //       new XAttribute("docMode", e.DocMode))).FirstOrDefault();
 
                 siteEntries.Add(domain);
 
